@@ -5,61 +5,68 @@ public class LomutoQuickSort {
 
     public void printArr(int[] arr) {
         int i;
-        for(i=0; i<arr.length; i++){
-            System.out.print("\t"+arr[i]);
+        for (i = 0; i < arr.length; i++) {
+            System.out.print("\t" + arr[i]);
         }
         System.out.println();
     }
 
-    public void quickSort(int[] arr, int low, int high, int counter){
+    public void quickSort(int[] arr, int left, int right, int k, int counter) {
 
+        System.out.println("\nQuickSort Loop # " + counter);
         counter++;
-        if(low<high){
-                 /* pi is partitioning index, arr[p] is now at right place */
-            System.out.println("QuickSort Loop # "+counter);
-            System.out.print("Values BEFORE partition:");
-            printArr(arr);
-            int val = lomuto(arr, low, high);
-            System.out.print("Values AFTER partition:");
-            printArr(arr);
-            System.out.println();
-            // Separately sort elements before
-            // partition and after partition
-            quickSort(arr, low, val - 1, counter);
-            quickSort(arr, val + 1, high, counter);
-        }
-    }
 
-    private int lomuto(int[] arr, int low, int high) {
+        System.out.print("Values BEFORE partition:");
+        printArr(arr);
+        int val = lomuto(arr, left, right);
 
-        int pivot = arr[high];    // pivot
-        int i = (low - 1);  // Index of smaller element
-        int j;
-        System.out.println("\tLomuto algorithm: ");
-        for (j = low; j <= high- 1; j++)
-        {
-            // equal to pivot
-            if (arr[j] <= pivot)
-            {
-                System.out.print("\t\tValues in array BEFORE swaping:"); printArr(arr);
-                System.out.println("\t\tSwap "+arr[i+1]+" with "+arr[j]+" as arr["+j+"] i.e. "+arr[j]+" is less than pivot "+pivot);
-                i++;    // increment index of smaller element
-                swap(arr, i, j);
-                System.out.print("\t\tValues in array AFTER swaping:"); printArr(arr);
+        System.out.print("Values AFTER partition:");
+        printArr(arr);
+
+        if (val == k - 1) {
+
+            return;
+        } else {
+
+            if (val > (k - 1)) {
+                quickSort(arr, left, val - 1, k, counter);
+
+            } else {
+                quickSort(arr, val + 1, right, k, counter);
             }
-            System.out.println("\t\tDo nothing and continue with the loop as arr["+j+"] i.e. "+arr[j]+" is more than pivot "+pivot);
         }
-        System.out.println("\t\tFinal swap between arr[i+1] "+arr[i+1]+" and pivot "+pivot+" before returning (i+1).");
-        swap(arr, i + 1, high);
-        int val = i+1;
 
-        return val;
     }
 
-    private void swap(int[] arr, int i, int j){
+    private int lomuto(int[] arr, int left, int right) {
+
+        int pivot = arr[left];
+        int j = left;
+        int i;
+
+        System.out.println("\tLomuto algorithm: ");
+        for (i = left + 1; i <= right; i++) {
+            if (arr[i] < pivot) {
+                System.out.print("\t\tBEFORE swaping:");
+                printArr(arr);
+                j++;
+                System.out.println("\t\t***Swap arr[j]:" + arr[j] + " with arr[i]:" + arr[i] + " as arr[i]:" + arr[i] + " is less than pivot:" + pivot);
+                swap(arr, j, i);
+                System.out.print("\t\tAFTER swaping:");
+                printArr(arr);
+                System.out.println();
+            }
+        }
+        System.out.println("\t\tFinal swap between arr[left]:" + arr[left] + " and arr[j]:" + arr[j] + " before returning j:" + j);
+        swap(arr, left, j);
+
+        return j;
+    }
+
+    private void swap(int[] arr, int i, int j) {
         int temp;
-        temp=arr[i];
+        temp = arr[i];
         arr[i] = arr[j];
-        arr[j]=temp;
+        arr[j] = temp;
     }
 }
